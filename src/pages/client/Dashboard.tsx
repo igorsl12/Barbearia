@@ -130,17 +130,20 @@ export function ClientDashboard() {
 
             {/* Barber info */}
             {config?.address && (
-              <div className="bg-white border border-gray-100 rounded-xl px-4 py-2.5 flex items-center gap-1.5">
+              <div className="bg-white border border-gray-100 rounded-xl px-4 py-2.5 flex items-center gap-2">
                 <MapPin size={13} className="text-gray-400 flex-shrink-0" />
-                <span className="text-xs text-gray-600">
-                  {[
-                    config.address,
-                    config.address_number,
-                    config.address_city && config.address_state
-                      ? `${config.address_city}/${config.address_state}`
-                      : config.address_city || config.address_state,
-                  ].filter(Boolean).join(', ')}
-                </span>
+                <div>
+                  <p className="text-xs text-gray-400 leading-none mb-0.5">Onde nos encontrar</p>
+                  <p className="text-xs text-gray-600">
+                    {[
+                      config.address,
+                      config.address_number,
+                      config.address_city && config.address_state
+                        ? `${config.address_city}/${config.address_state}`
+                        : config.address_city || config.address_state,
+                    ].filter(Boolean).join(', ')}
+                  </p>
+                </div>
               </div>
             )}
 
