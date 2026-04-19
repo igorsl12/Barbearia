@@ -9,9 +9,12 @@ export function useAppointments() {
 
   const loadMine = useCallback(async () => {
     setLoading(true)
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) { setLoading(false); return }
     const { data } = await supabase
       .from('appointments')
       .select('*, services(name, duration, price)')
+      .eq('client_id', user.id)
       .in('status', ['pending', 'confirmed'])
       .order('date', { ascending: true })
     setAppointments((data as Appointment[]) ?? [])
@@ -20,9 +23,12 @@ export function useAppointments() {
 
   const loadHistory = useCallback(async () => {
     setLoading(true)
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) { setLoading(false); return }
     const { data } = await supabase
       .from('appointments')
       .select('*, services(name, duration, price)')
+      .eq('client_id', user.id)
       .in('status', ['completed', 'cancelled'])
       .eq('hidden_by_client', false)
       .order('date', { ascending: false })
