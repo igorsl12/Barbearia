@@ -1,0 +1,29 @@
+import type { HTMLAttributes } from 'react'
+import { cn } from '@/lib/utils'
+
+interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
+  variant?: 'default' | 'pending' | 'confirmed' | 'cancelled' | 'completed'
+}
+
+const variants = {
+  default: 'bg-gray-100 text-gray-700',
+  pending: 'bg-amber-100 text-amber-800',
+  confirmed: 'bg-green-100 text-green-800',
+  cancelled: 'bg-red-100 text-red-700',
+  completed: 'bg-gray-100 text-gray-500',
+}
+
+export function Badge({ className, variant = 'default', children, ...props }: BadgeProps) {
+  return (
+    <span
+      className={cn(
+        'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium',
+        variants[variant],
+        className,
+      )}
+      {...props}
+    >
+      {children}
+    </span>
+  )
+}
