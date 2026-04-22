@@ -30,7 +30,7 @@ function AdminRoute({ children }: { children: ReactNode }) {
 function RootRedirect() {
   const { user, profile, loading, profileLoading } = useAuth()
   if (loading || profileLoading) return <LoadingScreen />
-  if (!user) return <Navigate to="/login" replace />
+  if (!user) return <Navigate to="/dashboard" replace />
   if (profile?.role === 'admin') return <Navigate to="/admin" replace />
   return <Navigate to="/dashboard" replace />
 }
@@ -52,14 +52,7 @@ function AppRoutes() {
       <Route path="/" element={<RootRedirect />} />
       <Route path="/login" element={<Login />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
-      <Route
-        path="/dashboard"
-        element={
-          <PrivateRoute>
-            <ClientDashboard />
-          </PrivateRoute>
-        }
-      />
+      <Route path="/dashboard" element={<ClientDashboard />} />
       <Route
         path="/profile"
         element={

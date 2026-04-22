@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 import { LogOut, User, Scissors, ChevronLeft, CalendarCheck, History, MapPin } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
@@ -15,7 +15,8 @@ import { generateTimeSlots, formatDate, formatCurrency } from '@/lib/utils'
 import type { BookingStep, Service } from '@/types'
 
 export function ClientDashboard() {
-  const { profile, signOut } = useAuth()
+  const { user, profile, signOut } = useAuth()
+  const navigate = useNavigate()
   const { services, loading: servicesLoading } = useServices()
   const { appointments, loading: apptsLoading, loadMine, getConfirmedForDate, bookAppointment, cancelAppointment } = useAppointments()
   const { config } = useBusinessConfig()
@@ -29,7 +30,7 @@ export function ClientDashboard() {
   const [confirmedSlots, setConfirmedSlots] = useState<Array<{ date: string; services: { duration: number } }>>([])
   const [booking, setBooking] = useState(false)
 
-  useEffect(() => { loadMine() }, [loadMine])
+  useEffect(() => { if (user) loadMine() }, [loadMine, user])
 
   async function handleDateSelect(date: Date) {
     setSelectedDate(date)
@@ -74,7 +75,7 @@ export function ClientDashboard() {
     await signOut()
   }
 
-  const firstName = profile?.full_name?.split(' ')[0] ?? 'você'
+  const firstName = profile?.full_name?.split(' ')[0]
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -101,21 +102,31 @@ export function ClientDashboard() {
                 )}
                 <div>
                   <p className="text-xs text-gray-400 leading-none">{config?.business_name ?? 'Barbearia'}</p>
-                  <p className="font-semibold text-gray-900 leading-tight">Olá, {firstName} 👋</p>
+                  <p className="font-semibold text-gray-900 leading-tight">
+                    {firstName ? `Olá, ${firstName} 👋` : 'Bem-vindo!'}
+                  </p>
                 </div>
               </div>
             )}
           </div>
           <div className="flex items-center gap-1">
-            <Link to="/history" className="p-2 hover:bg-gray-100 rounded-lg">
-              <History size={18} className="text-gray-600" />
-            </Link>
-            <Link to="/profile" className="p-2 hover:bg-gray-100 rounded-lg">
-              <User size={18} className="text-gray-600" />
-            </Link>
-            <button onClick={handleSignOut} className="p-2 hover:bg-gray-100 rounded-lg">
-              <LogOut size={18} className="text-gray-600" />
-            </button>
+            {user ? (
+              <>
+                <Link to="/history" className="p-2 hover:bg-gray-100 rounded-lg">
+                  <History size={18} className="text-gray-600" />
+                </Link>
+                <Link to="/profile" className="p-2 hover:bg-gray-100 rounded-lg">
+                  <User size={18} className="text-gray-600" />
+                </Link>
+                <button onClick={handleSignOut} className="p-2 hover:bg-gray-100 rounded-lg">
+                  <LogOut size={18} className="text-gray-600" />
+                </button>
+              </>
+            ) : (
+              <Link to="/login" className="text-sm font-medium px-3 py-1.5 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors">
+                Entrar
+              </Link>
+            )}
           </div>
         </div>
       </header>
@@ -123,7 +134,13 @@ export function ClientDashboard() {
       <main className="max-w-lg mx-auto px-4 py-6 space-y-6">
         {view === 'appointments' && (
           <>
-            <Button onClick={() => { setView('booking'); setStep('service') }} className="w-full">
+            <Button
+              onClick={() => {
+                if (!user) { navigate('/login'); return }
+                setView('booking'); setStep('service')
+              }}
+              className="w-full"
+            >
               <Scissors size={16} />
               Agendar novo horário
             </Button>
@@ -147,14 +164,16 @@ export function ClientDashboard() {
               </div>
             )}
 
-            <section>
-              <h2 className="text-base font-semibold text-gray-900 mb-3">Meus agendamentos</h2>
-              <AppointmentList
-                appointments={appointments}
-                loading={apptsLoading}
-                onCancel={handleCancel}
-              />
-            </section>
+            {user && (
+              <section>
+                <h2 className="text-base font-semibold text-gray-900 mb-3">Meus agendamentos</h2>
+                <AppointmentList
+                  appointments={appointments}
+                  loading={apptsLoading}
+                  onCancel={handleCancel}
+                />
+              </section>
+            )}
           </>
         )}
 
