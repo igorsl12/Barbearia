@@ -45,6 +45,7 @@ export function ClientDashboard() {
   }
 
   async function handleConfirm() {
+    if (!user) { navigate('/login'); return }
     if (!profile || !selectedService || !selectedSlot) return
     setBooking(true)
     try {
@@ -135,10 +136,7 @@ export function ClientDashboard() {
         {view === 'appointments' && (
           <>
             <Button
-              onClick={() => {
-                if (!user) { navigate('/login'); return }
-                setView('booking'); setStep('service')
-              }}
+              onClick={() => { setView('booking'); setStep('service') }}
               className="w-full"
             >
               <Scissors size={16} />
