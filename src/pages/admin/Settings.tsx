@@ -33,6 +33,9 @@ export function AdminSettings() {
   const [selectedDay, setSelectedDay] = useState<number>(1)
   const [slotInterval, setSlotInterval] = useState(30)
   const [autoConfirm, setAutoConfirm] = useState(false)
+  const [lunchEnabled, setLunchEnabled] = useState(false)
+  const [lunchStart, setLunchStart] = useState('12:00')
+  const [lunchEnd, setLunchEnd] = useState('13:00')
   const [savingConfig, setSavingConfig] = useState(false)
 
   useEffect(() => { loadAll() }, [loadAll])
@@ -44,6 +47,9 @@ export function AdminSettings() {
       setSelectedDay(days[0] ?? 1)
       setSlotInterval(config.slot_interval ?? 30)
       setAutoConfirm(config.auto_confirm ?? false)
+      setLunchEnabled(!!(config.lunch_start && config.lunch_end))
+      setLunchStart(config.lunch_start ?? '12:00')
+      setLunchEnd(config.lunch_end ?? '13:00')
       const defaultOpen  = config.opening_time?.slice(0, 5) ?? '09:00'
       const defaultClose = config.closing_time?.slice(0, 5) ?? '18:00'
       const hours: Record<number, { open: string; close: string }> = {}
@@ -98,6 +104,8 @@ export function AdminSettings() {
         closing_time: firstDay?.close ?? '18:00',
         slot_interval: slotInterval,
         auto_confirm: autoConfirm,
+        lunch_start: lunchEnabled ? lunchStart : null,
+        lunch_end: lunchEnabled ? lunchEnd : null,
         working_days: workingDays,
         day_hours: dayHoursRecord,
       })
@@ -249,6 +257,42 @@ export function AdminSettings() {
                     </button>
                   ))}
                 </div>
+              </div>
+
+              {/* Lunch break */}
+              <div className="space-y-3">
+                <div className="flex items-center justify-between py-1">
+                  <div>
+                    <p className="text-sm font-medium text-gray-700">Pausa para almoço</p>
+                    <p className="text-xs text-gray-400">Bloqueia horários durante a pausa</p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setLunchEnabled(v => !v)}
+                    className={`relative w-11 h-6 rounded-full transition-colors ${lunchEnabled ? 'bg-black' : 'bg-gray-200'}`}
+                  >
+                    <span className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform ${lunchEnabled ? 'translate-x-5' : 'translate-x-0'}`} />
+                  </button>
+                </div>
+                {lunchEnabled && (
+                  <div className="flex items-center gap-2 pl-1">
+                    <input
+                      type="time"
+                      value={lunchStart}
+                      onChange={e => setLunchStart(e.target.value)}
+                      className="flex-1 bg-white border border-gray-200 rounded-xl px-3 py-2.5 text-sm text-gray-700 focus:outline-none focus:ring-1 focus:ring-black"
+                    />
+                    <span className="text-xs text-gray-400 flex-shrink-0">às</span>
+                    <input
+                      type="time"
+                      value={lunchEnd}
+                      onChange={e => setLunchEnd(e.target.value)}
+                      className={`flex-1 bg-white border rounded-xl px-3 py-2.5 text-sm text-gray-700 focus:outline-none focus:ring-1 focus:ring-black ${
+                        lunchEnd <= lunchStart ? 'border-red-300 bg-red-50' : 'border-gray-200'
+                      }`}
+                    />
+                  </div>
+                )}
               </div>
 
               {/* Auto-confirm */}

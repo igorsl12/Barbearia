@@ -48,6 +48,8 @@ export interface BusinessConfig {
   closing_time: string
   slot_interval: number
   auto_confirm: boolean
+  lunch_start: string | null
+  lunch_end: string | null
   working_days: number[] // 0=Dom, 1=Seg, 2=Ter, 3=Qua, 4=Qui, 5=Sex, 6=Sáb
   day_hours: Record<string, DayHours> // key = day number as string
 }

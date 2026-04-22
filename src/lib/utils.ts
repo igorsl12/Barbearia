@@ -44,9 +44,21 @@ export function generateTimeSlots(config: BusinessConfig, date: Date): string[] 
   const end = new Date(date)
   end.setHours(closeH, closeM, 0, 0)
 
+  let lunchStart: Date | null = null
+  let lunchEnd: Date | null = null
+  if (config.lunch_start && config.lunch_end) {
+    const [lsH, lsM] = config.lunch_start.split(':').map(Number)
+    const [leH, leM] = config.lunch_end.split(':').map(Number)
+    lunchStart = new Date(date)
+    lunchStart.setHours(lsH, lsM, 0, 0)
+    lunchEnd = new Date(date)
+    lunchEnd.setHours(leH, leM, 0, 0)
+  }
+
   let current = start
   while (current < end) {
-    slots.push(current.toISOString())
+    const inLunch = lunchStart && lunchEnd && current >= lunchStart && current < lunchEnd
+    if (!inLunch) slots.push(current.toISOString())
     current = addMinutes(current, config.slot_interval)
   }
 
