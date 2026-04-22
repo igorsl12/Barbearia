@@ -16,7 +16,8 @@
       "Bash(powershell -Command \"[System.Environment]::GetEnvironmentVariable\\('Path','User'\\) -split ';' | Select-String -Pattern 'node|nodejs'\")",
       "Bash(export PATH=\"/c/Users/igors/AppData/Local/Microsoft/WinGet/Packages/OpenJS.NodeJS.LTS_Microsoft.Winget.Source_8wekyb3d8bbwe/node-v24.15.0-win-x64:$PATH\")",
       "Bash(npm --version)",
-      "Bash(npm run *)"
+      "Bash(npm run *)",
+      "Bash(git add *)"
     ]
   }
 }
