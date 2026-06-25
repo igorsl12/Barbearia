@@ -55,7 +55,7 @@ export function ForgotPassword() {
 
   async function handleVerifyOtp(e: React.FormEvent) {
     e.preventDefault()
-    if (otp.length < 8) { toast.error('Digite o código completo'); return }
+    if (otp.length < 6) { toast.error('Digite o código completo'); return }
     setLoading(true)
     try {
       await verifyOtp(email, otp)
@@ -121,8 +121,8 @@ export function ForgotPassword() {
                   Código enviado para <strong>{email}</strong>
                 </p>
               </div>
-              <OTPInput value={otp} onChange={setOtp} length={8} />
-              <Button type="submit" loading={loading} className="w-full" disabled={otp.length < 8}>
+              <OTPInput value={otp} onChange={setOtp} length={6} />
+              <Button type="submit" loading={loading} className="w-full" disabled={otp.length < 6}>
                 Verificar código
               </Button>
               <button

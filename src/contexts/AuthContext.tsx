@@ -27,34 +27,57 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true)
   const [profileLoading, setProfileLoading] = useState(false)
 
-  const fetchProfile = useCallback(async (userId: string) => {
-    setProfileLoading(true)
-    const { data } = await supabase
+  // Busca o perfil; se não existir, cria um (rede de segurança caso
+  // o trigger do banco não tenha rodado — comum no login com Google).
+  const ensureProfile = useCallback(async (authUser: User): Promise<Profile | null> => {
+    const { data, error } = await supabase
       .from('profiles')
       .select('*')
-      .eq('id', userId)
+      .eq('id', authUser.id)
+      .maybeSingle()
+
+    if (error) {
+      console.error('Erro ao buscar perfil:', error)
+      return null
+    }
+    if (data) return data
+
+    // Perfil ausente → cria a partir dos metadados do usuário.
+    const meta = authUser.user_metadata ?? {}
+    const { data: created, error: insertError } = await supabase
+      .from('profiles')
+      .insert({
+        id: authUser.id,
+        email: authUser.email ?? '',
+        full_name: meta.full_name ?? meta.name ?? (authUser.email?.split('@')[0] ?? ''),
+        avatar_url: meta.avatar_url ?? meta.picture ?? null,
+        role: 'client',
+      })
+      .select('*')
       .single()
-    setProfile(data ?? null)
-    setProfileLoading(false)
+
+    if (insertError) {
+      console.error('Erro ao criar perfil:', insertError)
+      return null
+    }
+    return created
   }, [])
+
+  const fetchProfile = useCallback(async (authUser: User) => {
+    setProfileLoading(true)
+    const profileData = await ensureProfile(authUser)
+    setProfile(profileData)
+    setProfileLoading(false)
+  }, [ensureProfile])
 
   useEffect(() => {
     const init = async () => {
       const { data: { session } } = await supabase.auth.getSession()
       if (session?.user) {
-        const { data: profileData } = await supabase
-          .from('profiles')
-          .select('*')
-          .eq('id', session.user.id)
-          .single()
-
-        if (!profileData) {
-          // Sessão órfã: JWT válido mas perfil deletado → desloga
-          await supabase.auth.signOut()
-        } else {
-          setUser(session.user)
-          setProfile(profileData)
-        }
+        // Mantém a sessão e garante o perfil (cria se faltar).
+        setUser(session.user)
+        const profileData = await ensureProfile(session.user)
+        setProfile(profileData)
       }
       setLoading(false)
     }
@@ -65,27 +88,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       setUser(session?.user ?? null)
       if (session?.user) {
-        fetchProfile(session.user.id)
+        fetchProfile(session.user)
       } else {
         setProfile(null)
       }
     })
 
     return () => subscription.unsubscribe()
-  }, [fetchProfile])
+  }, [fetchProfile, ensureProfile])
 
   async function signIn(email: string, password: string): Promise<'admin' | 'client'> {
     const { data, error } = await supabase.auth.signInWithPassword({ email, password })
     if (error) throw error
     if (data.user) {
-      const { data: profileData } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('id', data.user.id)
-        .single()
+      const profileData = await ensureProfile(data.user)
       if (!profileData) {
-        await supabase.auth.signOut()
-        throw new Error('Perfil não encontrado. Crie uma nova conta.')
+        throw new Error('Não foi possível carregar seu perfil. Tente novamente.')
       }
       setUser(data.user)
       setProfile(profileData)
