@@ -1,11 +1,12 @@
 import { useRef, useState } from 'react'
-import { Link } from 'react-router-dom'
 import { toast } from 'sonner'
-import { ArrowLeft, Camera, User } from 'lucide-react'
+import { Camera, User } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
 import { supabase } from '@/lib/supabase'
 import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { PageHeader } from '@/components/layout/PageHeader'
 
 export function ClientProfile() {
   const { profile, updateProfile } = useAuth()
@@ -63,16 +64,9 @@ export function ClientProfile() {
 
   return (
     <div className="min-h-screen bg-cream">
-      <header className="bg-white border-b border-ink-100 sticky top-0 z-10">
-        <div className="max-w-lg mx-auto px-4 h-14 flex items-center gap-3">
-          <Link to="/dashboard" className="p-1.5 hover:bg-ink-100 rounded-lg">
-            <ArrowLeft size={20} />
-          </Link>
-          <span className="font-semibold text-ink-900">Meu perfil</span>
-        </div>
-      </header>
+      <PageHeader title="Meu perfil" backTo="/dashboard" />
 
-      <main className="max-w-lg mx-auto px-4 py-6 space-y-5">
+      <main className="max-w-lg mx-auto px-4 py-6 space-y-5 animate-fade-up">
         {/* Avatar */}
         <div className="flex flex-col items-center gap-3 py-4">
           <button
@@ -81,16 +75,16 @@ export function ClientProfile() {
             disabled={uploading}
             className="relative group"
           >
-            <div className="w-24 h-24 rounded-full bg-ink-100 border-2 border-ink-200 overflow-hidden flex items-center justify-center">
+            <div className="w-28 h-28 rounded-full bg-ink-100 ring-4 ring-white shadow-card overflow-hidden flex items-center justify-center">
               {avatarUrl ? (
                 <img src={avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
               ) : (
-                <User size={36} className="text-ink-400" />
+                <User size={40} className="text-ink-400" />
               )}
             </div>
-            <div className="absolute inset-0 rounded-full bg-ink-900/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-              <Camera size={20} className="text-white" />
-            </div>
+            <span className="absolute bottom-1 right-1 flex h-8 w-8 items-center justify-center rounded-full bg-brand-400 text-ink-950 shadow-glow ring-2 ring-cream">
+              <Camera size={15} />
+            </span>
             {uploading && (
               <div className="absolute inset-0 rounded-full bg-ink-900/50 flex items-center justify-center">
                 <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -98,58 +92,31 @@ export function ClientProfile() {
             )}
           </button>
           <p className="text-xs text-ink-400">Toque para alterar a foto · máx. 2MB</p>
-          <input
-            ref={fileRef}
-            type="file"
-            accept="image/*"
-            className="hidden"
-            onChange={handleAvatarChange}
-          />
+          <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={handleAvatarChange} />
         </div>
 
         {/* Form */}
         <Card className="p-5">
           <form onSubmit={handleSave} className="space-y-4">
+            <Input
+              label="Nome completo"
+              type="text"
+              value={fullName}
+              onChange={e => setFullName(e.target.value)}
+              placeholder="Seu nome"
+            />
             <div>
-              <label className="text-xs text-ink-500 font-medium uppercase tracking-wide mb-1.5 block">
-                Nome completo
-              </label>
-              <input
-                type="text"
-                value={fullName}
-                onChange={e => setFullName(e.target.value)}
-                placeholder="Seu nome"
-                className="w-full border border-ink-200 rounded-xl px-3 py-2.5 text-sm text-ink-700 focus:outline-none focus:ring-1 focus:ring-ink-900"
-              />
-            </div>
-
-            <div>
-              <label className="text-xs text-ink-500 font-medium uppercase tracking-wide mb-1.5 block">
-                E-mail
-              </label>
-              <input
-                type="email"
-                value={profile?.email ?? ''}
-                disabled
-                className="w-full border border-ink-100 rounded-xl px-3 py-2.5 text-sm text-ink-400 bg-ink-50 cursor-not-allowed"
-              />
+              <Input label="E-mail" type="email" value={profile?.email ?? ''} disabled />
               <p className="text-xs text-ink-400 mt-1">O e-mail não pode ser alterado.</p>
             </div>
-
-            <div>
-              <label className="text-xs text-ink-500 font-medium uppercase tracking-wide mb-1.5 block">
-                Telefone
-              </label>
-              <input
-                type="tel"
-                value={phone}
-                onChange={e => setPhone(e.target.value)}
-                placeholder="(11) 99999-9999"
-                className="w-full border border-ink-200 rounded-xl px-3 py-2.5 text-sm text-ink-700 focus:outline-none focus:ring-1 focus:ring-ink-900"
-              />
-            </div>
-
-            <Button type="submit" loading={saving} className="w-full">
+            <Input
+              label="Telefone"
+              type="tel"
+              value={phone}
+              onChange={e => setPhone(e.target.value)}
+              placeholder="(11) 99999-9999"
+            />
+            <Button type="submit" variant="accent" loading={saving} className="w-full">
               Salvar alterações
             </Button>
           </form>

@@ -6,13 +6,17 @@ import { format, addDays, subDays, isToday } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import { useAuth } from '@/contexts/AuthContext'
 import { useAppointments } from '@/hooks/useAppointments'
+import { useBusinessConfig } from '@/hooks/useBusinessConfig'
 import { AppointmentCard } from '@/components/admin/AppointmentCard'
 import { StatsOverview } from '@/components/admin/StatsOverview'
+import { PageHeader } from '@/components/layout/PageHeader'
+import { Badge } from '@/components/ui/badge'
 import type { Appointment, AppointmentStats } from '@/types'
 
 export function AdminDashboard() {
   const { signOut } = useAuth()
   const { appointments, loading, loadByDate, loadStats, updateStatus } = useAppointments()
+  const { config } = useBusinessConfig()
   const [date, setDate] = useState(new Date())
   const [stats, setStats] = useState<AppointmentStats | null>(null)
   const [statsLoading, setStatsLoading] = useState(true)
@@ -51,66 +55,66 @@ export function AdminDashboard() {
 
   const pendingCount = appointments.filter(a => a.status === 'pending').length
 
+  const headerActions = (
+    <>
+      {pendingCount > 0 && (
+        <Badge variant="pending" className="mr-0.5">{pendingCount}</Badge>
+      )}
+      <Link to="/admin/history" className="p-2 hover:bg-ink-100 rounded-lg transition-colors" aria-label="Histórico">
+        <History size={18} className="text-ink-600" />
+      </Link>
+      <Link to="/admin/identity" className="p-2 hover:bg-ink-100 rounded-lg transition-colors" aria-label="Identidade">
+        <Palette size={18} className="text-ink-600" />
+      </Link>
+      <Link to="/admin/settings" className="p-2 hover:bg-ink-100 rounded-lg transition-colors" aria-label="Configurações">
+        <Settings size={18} className="text-ink-600" />
+      </Link>
+      <button onClick={signOut} className="p-2 hover:bg-ink-100 rounded-lg transition-colors" aria-label="Sair">
+        <LogOut size={18} className="text-ink-600" />
+      </button>
+    </>
+  )
+
   return (
     <div className="min-h-screen bg-cream">
-      <header className="bg-white border-b border-ink-100 sticky top-0 z-10">
-        <div className="max-w-lg mx-auto px-4 h-14 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="w-7 h-7 bg-ink-900 rounded-lg flex items-center justify-center">
-              <Scissors size={14} className="text-brand-400" />
-            </div>
-            <span className="font-display text-lg uppercase tracking-wide text-ink-900">Painel Admin</span>
-            {pendingCount > 0 && (
-              <span className="bg-brand-400 text-ink-900 text-xs font-bold px-1.5 py-0.5 rounded-full">
-                {pendingCount}
-              </span>
-            )}
-          </div>
-          <div className="flex items-center gap-1">
-            <Link to="/admin/history" className="p-2 hover:bg-ink-50 rounded-lg">
-              <History size={18} className="text-ink-600" />
-            </Link>
-            <Link to="/admin/identity" className="p-2 hover:bg-ink-50 rounded-lg">
-              <Palette size={18} className="text-ink-600" />
-            </Link>
-            <Link to="/admin/settings" className="p-2 hover:bg-ink-50 rounded-lg">
-              <Settings size={18} className="text-ink-600" />
-            </Link>
-            <button onClick={signOut} className="p-2 hover:bg-ink-50 rounded-lg">
-              <LogOut size={18} className="text-ink-600" />
-            </button>
-          </div>
-        </div>
-      </header>
+      <PageHeader
+        showLogo
+        logo={config?.logo_url}
+        eyebrow="Painel admin"
+        title={config?.business_name ?? 'Agenda'}
+        actions={headerActions}
+      />
 
-      <main className="max-w-lg mx-auto px-4 py-6 space-y-5">
+      <main className="max-w-lg mx-auto px-4 py-6 space-y-5 animate-fade-up">
         {/* Stats overview */}
         <StatsOverview stats={stats} loading={statsLoading} />
 
         {/* Date navigator */}
-        <div className="flex items-center justify-between bg-white border border-ink-100 rounded-xl p-3">
+        <div className="flex items-center justify-between bg-white border border-ink-100 rounded-2xl p-3 shadow-soft">
           <button
             onClick={() => setDate(d => subDays(d, 1))}
-            className="p-1.5 hover:bg-ink-50 rounded-lg"
+            className="p-1.5 hover:bg-ink-100 rounded-lg text-ink-600 transition-colors"
+            aria-label="Dia anterior"
           >
-            <ChevronLeft size={18} className="text-ink-600" />
+            <ChevronLeft size={18} />
           </button>
           <div className="text-center">
-            <p className="text-sm font-semibold text-ink-900 capitalize">{dateLabel}</p>
+            <p className="font-display font-bold uppercase tracking-wide text-ink-900 capitalize leading-tight">{dateLabel}</p>
             <p className="text-xs text-ink-400">{format(date, 'dd/MM/yyyy')}</p>
           </div>
           <button
             onClick={() => setDate(d => addDays(d, 1))}
-            className="p-1.5 hover:bg-ink-50 rounded-lg"
+            className="p-1.5 hover:bg-ink-100 rounded-lg text-ink-600 transition-colors"
+            aria-label="Próximo dia"
           >
-            <ChevronRight size={18} className="text-ink-600" />
+            <ChevronRight size={18} />
           </button>
         </div>
 
         {/* Appointments */}
         <section>
           <div className="flex items-center justify-between mb-3">
-            <h2 className="font-display text-lg uppercase tracking-wide text-ink-900">
+            <h2 className="font-display font-bold uppercase tracking-wide text-ink-900 text-lg">
               Agendamentos{' '}
               {appointments.length > 0 && (
                 <span className="text-ink-400 font-normal">({appointments.length})</span>
@@ -119,7 +123,7 @@ export function AdminDashboard() {
             {!isToday(date) && (
               <button
                 onClick={() => setDate(new Date())}
-                className="text-xs text-ink-500 hover:text-brand-600"
+                className="text-xs font-semibold text-ink-500 hover:text-brand-600 transition-colors"
               >
                 Ir para hoje
               </button>
@@ -129,7 +133,7 @@ export function AdminDashboard() {
           {loading ? (
             <div className="space-y-3">
               {[1, 2, 3].map(i => (
-                <div key={i} className="h-28 bg-ink-100 animate-pulse rounded-xl" />
+                <div key={i} className="h-28 bg-ink-100 animate-pulse rounded-2xl" />
               ))}
             </div>
           ) : appointments.length === 0 ? (

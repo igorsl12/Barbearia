@@ -84,7 +84,7 @@ export function ForgotPassword() {
 
   return (
     <div className="min-h-screen bg-cream flex items-center justify-center p-4">
-      <div className="w-full max-w-sm">
+      <div className="w-full max-w-sm animate-fade-up">
         <Link to="/login" className="inline-flex items-center gap-1.5 text-sm text-ink-500 hover:text-ink-900 mb-6">
           <ArrowLeft size={16} /> Voltar ao login
         </Link>
@@ -93,7 +93,7 @@ export function ForgotPassword() {
           {step === 'email' && (
             <form onSubmit={handleSendOtp} className="space-y-4">
               <div>
-                <h2 className="text-xl font-bold text-ink-900">Recuperar senha</h2>
+                <h2 className="font-display text-2xl font-bold text-ink-900">Recuperar senha</h2>
                 <p className="text-sm text-ink-500 mt-1">
                   Enviaremos um código de 6 dígitos para o seu e-mail.
                 </p>
@@ -107,7 +107,7 @@ export function ForgotPassword() {
                 icon={<Mail size={16} />}
                 autoFocus
               />
-              <Button type="submit" loading={loading} className="w-full">
+              <Button type="submit" variant="accent" loading={loading} className="w-full">
                 Enviar código
               </Button>
             </form>
@@ -116,13 +116,13 @@ export function ForgotPassword() {
           {step === 'otp' && (
             <form onSubmit={handleVerifyOtp} className="space-y-6">
               <div>
-                <h2 className="text-xl font-bold text-ink-900">Digite o código</h2>
+                <h2 className="font-display text-2xl font-bold text-ink-900">Digite o código</h2>
                 <p className="text-sm text-ink-500 mt-1">
                   Código enviado para <strong>{email}</strong>
                 </p>
               </div>
               <OTPInput value={otp} onChange={setOtp} length={6} />
-              <Button type="submit" loading={loading} className="w-full" disabled={otp.length < 6}>
+              <Button type="submit" variant="accent" loading={loading} className="w-full" disabled={otp.length < 6}>
                 Verificar código
               </Button>
               <button
@@ -138,7 +138,7 @@ export function ForgotPassword() {
           {step === 'password' && (
             <form onSubmit={handleUpdatePassword} className="space-y-4">
               <div>
-                <h2 className="text-xl font-bold text-ink-900">Nova senha</h2>
+                <h2 className="font-display text-2xl font-bold text-ink-900">Nova senha</h2>
                 <p className="text-sm text-ink-500 mt-1">Escolha uma senha segura.</p>
               </div>
               <div>
@@ -160,7 +160,7 @@ export function ForgotPassword() {
                 onChange={e => setConfirmPassword(e.target.value)}
                 icon={<Lock size={16} />}
               />
-              <Button type="submit" loading={loading} className="w-full">
+              <Button type="submit" variant="accent" loading={loading} className="w-full">
                 Atualizar senha
               </Button>
             </form>
@@ -170,10 +170,10 @@ export function ForgotPassword() {
             <div className="flex flex-col items-center gap-4 py-4">
               <CheckCircle size={48} className="text-emerald-500" />
               <div className="text-center">
-                <h2 className="text-xl font-bold text-ink-900">Senha atualizada!</h2>
+                <h2 className="font-display text-2xl font-bold text-ink-900">Senha atualizada!</h2>
                 <p className="text-sm text-ink-500 mt-1">Sua senha foi redefinida com sucesso.</p>
               </div>
-              <Button onClick={() => navigate('/login')} className="w-full">
+              <Button onClick={() => navigate('/login')} variant="accent" className="w-full">
                 Ir para o login
               </Button>
             </div>

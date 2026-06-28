@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
-import { ArrowLeft, Calendar, Clock, Scissors, User, Trash2, ChevronDown } from 'lucide-react'
+import { Calendar, Clock, Scissors, User, Trash2, ChevronDown } from 'lucide-react'
 import { startOfDay, endOfDay, startOfWeek, endOfWeek, startOfMonth, endOfMonth } from 'date-fns'
 import { toast } from 'sonner'
 import { useAppointments } from '@/hooks/useAppointments'
+import { PageHeader } from '@/components/layout/PageHeader'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { formatDate, formatCurrency } from '@/lib/utils'
+import { formatDate, formatCurrency, formatDuration } from '@/lib/utils'
 
 type StatusFilter = 'all' | 'completed' | 'cancelled'
 type PeriodFilter = 'all' | 'day' | 'week' | 'month'
@@ -51,13 +51,13 @@ function Select({ label, value, onChange, options }: {
         <select
           value={value}
           onChange={e => onChange(e.target.value)}
-          className="w-full appearance-none bg-white border border-ink-200 rounded-xl px-3 py-2.5 text-sm text-ink-700 focus:outline-none focus:ring-1 focus:ring-ink-900 cursor-pointer pr-8"
+          className="w-full appearance-none bg-white border border-ink-200 rounded-xl px-3.5 h-11 text-sm text-ink-900 transition-all focus:outline-none focus:ring-2 focus:ring-brand-400/60 focus:border-brand-400 cursor-pointer pr-9"
         >
           {options.map(o => (
             <option key={o.value} value={o.value}>{o.label}</option>
           ))}
         </select>
-        <ChevronDown size={14} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-ink-400 pointer-events-none" />
+        <ChevronDown size={15} className="absolute right-3 top-1/2 -translate-y-1/2 text-ink-400 pointer-events-none" />
       </div>
     </div>
   )
@@ -95,50 +95,40 @@ export function AdminHistory() {
     }
   }
 
+  const clearAction = appointments.length > 0 && (
+    confirmClear ? (
+      <div className="flex items-center gap-2">
+        <span className="text-xs text-ink-500">Limpar período?</span>
+        <button
+          onClick={handleClear}
+          disabled={clearing}
+          className="text-xs font-semibold text-red-600 hover:text-red-700 disabled:opacity-50"
+        >
+          Confirmar
+        </button>
+        <button
+          onClick={() => setConfirmClear(false)}
+          className="text-xs text-ink-400 hover:text-ink-600"
+        >
+          Cancelar
+        </button>
+      </div>
+    ) : (
+      <button
+        onClick={() => setConfirmClear(true)}
+        className="flex items-center gap-1.5 text-xs font-semibold text-ink-500 hover:text-red-600 transition-colors p-2 rounded-lg hover:bg-red-50"
+      >
+        <Trash2 size={15} />
+        Limpar
+      </button>
+    )
+  )
+
   return (
     <div className="min-h-screen bg-cream">
-      <header className="bg-white border-b border-ink-100 sticky top-0 z-10">
-        <div className="max-w-lg mx-auto px-4 h-14 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <Link to="/admin" className="p-1.5 hover:bg-ink-100 rounded-lg">
-              <ArrowLeft size={20} />
-            </Link>
-            <span className="font-semibold text-ink-900">Histórico</span>
-          </div>
-          {appointments.length > 0 && (
-            <div className="flex items-center gap-2">
-              {confirmClear ? (
-                <div className="flex items-center gap-2">
-                  <span className="text-xs text-ink-500">Limpar período?</span>
-                  <button
-                    onClick={handleClear}
-                    disabled={clearing}
-                    className="text-xs font-semibold text-red-500 hover:text-red-700"
-                  >
-                    Confirmar
-                  </button>
-                  <button
-                    onClick={() => setConfirmClear(false)}
-                    className="text-xs text-ink-400 hover:text-ink-600"
-                  >
-                    Cancelar
-                  </button>
-                </div>
-              ) : (
-                <button
-                  onClick={() => setConfirmClear(true)}
-                  className="flex items-center gap-1.5 text-xs text-ink-400 hover:text-red-500 transition-colors p-1.5 rounded-lg hover:bg-red-50"
-                >
-                  <Trash2 size={15} />
-                  Limpar
-                </button>
-              )}
-            </div>
-          )}
-        </div>
-      </header>
+      <PageHeader backTo="/admin" title="Histórico" actions={clearAction || undefined} />
 
-      <main className="max-w-lg mx-auto px-4 py-6 space-y-5">
+      <main className="max-w-lg mx-auto px-4 py-6 space-y-5 animate-fade-up">
         {/* Filters */}
         <div className="flex gap-3">
           <Select
@@ -168,7 +158,7 @@ export function AdminHistory() {
         {loading ? (
           <div className="space-y-3">
             {[1, 2, 3].map(i => (
-              <div key={i} className="h-24 bg-ink-100 animate-pulse rounded-xl" />
+              <div key={i} className="h-24 bg-ink-100 animate-pulse rounded-2xl" />
             ))}
           </div>
         ) : filtered.length === 0 ? (
@@ -178,13 +168,15 @@ export function AdminHistory() {
           </div>
         ) : (
           <>
-            <p className="text-xs text-ink-400">{filtered.length} registro{filtered.length !== 1 ? 's' : ''}</p>
+            <p className="font-display font-bold uppercase tracking-wide text-ink-500 text-xs">
+              {filtered.length} registro{filtered.length !== 1 ? 's' : ''}
+            </p>
             <div className="space-y-3">
               {filtered.map(appt => (
                 <Card key={appt.id} className="p-4">
                   <div className="flex items-start justify-between gap-2">
                     <div className="flex-1 min-w-0 space-y-1">
-                      <div className="flex items-center gap-1.5 text-sm text-ink-700">
+                      <div className="flex items-center gap-1.5 text-sm text-ink-900">
                         <User size={13} className="text-ink-400 flex-shrink-0" />
                         <span className="font-medium truncate">{appt.profiles?.full_name ?? 'Cliente'}</span>
                       </div>
@@ -201,7 +193,7 @@ export function AdminHistory() {
                         {appt.services && (
                           <>
                             <Clock size={12} />
-                            <span>{appt.services.duration} min</span>
+                            <span>{formatDuration(appt.services.duration)}</span>
                           </>
                         )}
                       </div>

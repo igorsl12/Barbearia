@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
-import { ArrowLeft, Calendar, Clock, Scissors, Trash2 } from 'lucide-react'
+import { Calendar, Clock, Scissors, Trash2 } from 'lucide-react'
 import { toast } from 'sonner'
 import { useAppointments } from '@/hooks/useAppointments'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { PageHeader } from '@/components/layout/PageHeader'
 import { formatDate, formatCurrency } from '@/lib/utils'
 
 const STATUS_LABEL: Record<string, string> = {
@@ -37,61 +37,49 @@ export function ClientHistory() {
     }
   }
 
+  const clearAction =
+    appointments.length > 0 ? (
+      confirmClear ? (
+        <div className="flex items-center gap-2">
+          <span className="text-xs text-ink-500">Limpar tudo?</span>
+          <button
+            onClick={handleClear}
+            disabled={clearing}
+            className="text-xs font-semibold text-red-500 hover:text-red-700"
+          >
+            Confirmar
+          </button>
+          <button onClick={() => setConfirmClear(false)} className="text-xs text-ink-400 hover:text-ink-600">
+            Cancelar
+          </button>
+        </div>
+      ) : (
+        <button
+          onClick={() => setConfirmClear(true)}
+          className="flex items-center gap-1.5 text-xs text-ink-400 hover:text-red-500 transition-colors p-2 rounded-lg hover:bg-red-50"
+        >
+          <Trash2 size={15} />
+          Limpar
+        </button>
+      )
+    ) : undefined
+
   return (
     <div className="min-h-screen bg-cream">
-      <header className="bg-white border-b border-ink-100 sticky top-0 z-10">
-        <div className="max-w-lg mx-auto px-4 h-14 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <Link to="/dashboard" className="p-1.5 hover:bg-ink-100 rounded-lg">
-              <ArrowLeft size={20} />
-            </Link>
-            <span className="font-semibold text-ink-900">Histórico</span>
-          </div>
-          {appointments.length > 0 && (
-            <div className="flex items-center gap-2">
-              {confirmClear ? (
-                <div className="flex items-center gap-2">
-                  <span className="text-xs text-ink-500">Limpar tudo?</span>
-                  <button
-                    onClick={handleClear}
-                    disabled={clearing}
-                    className="text-xs font-semibold text-red-500 hover:text-red-700"
-                  >
-                    Confirmar
-                  </button>
-                  <button
-                    onClick={() => setConfirmClear(false)}
-                    className="text-xs text-ink-400 hover:text-ink-600"
-                  >
-                    Cancelar
-                  </button>
-                </div>
-              ) : (
-                <button
-                  onClick={() => setConfirmClear(true)}
-                  className="flex items-center gap-1.5 text-xs text-ink-400 hover:text-red-500 transition-colors p-1.5 rounded-lg hover:bg-red-50"
-                >
-                  <Trash2 size={15} />
-                  Limpar
-                </button>
-              )}
-            </div>
-          )}
-        </div>
-      </header>
+      <PageHeader title="Histórico" backTo="/dashboard" actions={clearAction} />
 
-      <main className="max-w-lg mx-auto px-4 py-6">
+      <main className="max-w-lg mx-auto px-4 py-6 animate-fade-up">
         {loading ? (
           <div className="space-y-3">
             {[1, 2, 3].map(i => (
-              <div key={i} className="h-24 bg-ink-100 animate-pulse rounded-xl" />
+              <div key={i} className="h-24 bg-ink-100 animate-pulse rounded-2xl" />
             ))}
           </div>
         ) : appointments.length === 0 ? (
-          <div className="flex flex-col items-center gap-2 py-16 text-ink-400">
+          <Card className="flex flex-col items-center gap-2 py-16 text-ink-400 border-dashed">
             <Scissors size={32} className="opacity-40" />
             <p className="text-sm">Nenhum histórico ainda.</p>
-          </div>
+          </Card>
         ) : (
           <>
             <p className="text-xs text-ink-400 mb-3">{appointments.length} registro{appointments.length !== 1 ? 's' : ''}</p>

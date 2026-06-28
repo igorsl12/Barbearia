@@ -46,10 +46,10 @@ export function OTPInput({ value, onChange, length = 6 }: OTPInputProps) {
           onKeyDown={e => handleKeyDown(i, e)}
           onPaste={handlePaste}
           className={cn(
-            'w-11 h-14 text-center text-xl font-semibold rounded-lg border border-ink-200 bg-white',
-            'focus:outline-none focus:ring-2 focus:ring-ink-900 focus:border-transparent',
-            'transition-colors',
-            digit && 'border-ink-900',
+            'w-11 h-14 text-center text-xl font-display font-bold rounded-xl border border-ink-200 bg-white text-ink-900',
+            'focus:outline-none focus:ring-2 focus:ring-brand-400/60 focus:border-brand-400',
+            'transition-all',
+            digit && 'border-brand-400 bg-brand-50',
           )}
         />
       ))}
