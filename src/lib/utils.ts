@@ -78,9 +78,9 @@ export function statusLabel(status: string) {
 export function statusColor(status: string) {
   const map: Record<string, string> = {
     pending: 'bg-amber-100 text-amber-800',
-    confirmed: 'bg-green-100 text-green-800',
-    cancelled: 'bg-red-100 text-red-800',
-    completed: 'bg-gray-100 text-gray-600',
+    confirmed: 'bg-emerald-100 text-emerald-800',
+    cancelled: 'bg-red-100 text-red-700',
+    completed: 'bg-ink-100 text-ink-500',
   }
-  return map[status] ?? 'bg-gray-100 text-gray-600'
+  return map[status] ?? 'bg-ink-100 text-ink-500'
 }

@@ -7,14 +7,48 @@
     -webkit-tap-highlight-color: transparent;
   }
 
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
   body {
-    @apply bg-gray-50 text-gray-900 font-sans antialiased;
+    @apply bg-cream text-ink-900 font-sans antialiased;
+    background-image:
+      radial-gradient(circle at 0% 0%, rgba(212, 155, 65, 0.06), transparent 38%),
+      radial-gradient(circle at 100% 0%, rgba(28, 25, 21, 0.05), transparent 30%);
+    background-attachment: fixed;
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply tracking-tight;
   }
 
   input[type='number']::-webkit-inner-spin-button,
   input[type='number']::-webkit-outer-spin-button {
     -webkit-appearance: none;
     margin: 0;
+  }
+}
+
+@layer components {
+  /* Título de marca — tipografia condensada de letreiro de barbearia */
+  .brand-wordmark {
+    @apply font-display font-bold uppercase tracking-[0.18em];
+  }
+
+  /* Faixa decorativa estilo poste de barbearia */
+  .barber-stripe {
+    background: repeating-linear-gradient(
+      135deg,
+      theme('colors.brand.400') 0,
+      theme('colors.brand.400') 8px,
+      theme('colors.ink.900') 8px,
+      theme('colors.ink.900') 16px,
+      theme('colors.cream') 16px,
+      theme('colors.cream') 24px
+    );
   }
 }
 
@@ -25,5 +59,10 @@
   }
   .scrollbar-hide::-webkit-scrollbar {
     display: none;
+  }
+
+  /* Área segura para a barra de navegação inferior em telas com notch */
+  .pb-safe {
+    padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 1rem);
   }
 }

@@ -1,14 +1,34 @@
 # Dependências
 node_modules
+.pnp
+.pnp.js
 
 # Build
 dist
 dist-ssr
+build
+*.tsbuildinfo
 
-# Variáveis de ambiente (NUNCA subir)
+# Variáveis de ambiente e segredos (NUNCA subir)
 .env
-.env.local
-.env.*.local
+.env.*
+!.env.example
+*.local
+*.pem
+*.key
+*.p12
+*.pfx
+secrets.json
+service-account*.json
+.supabase/
+
+# Configurações locais do Claude Code (mantém .claude/settings.json compartilhado)
+.claude/settings.local.json
+.claude/*.local.json
+
+# Deploy
+.vercel
+.netlify
 
 # Logs
 *.log
@@ -16,6 +36,12 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
+
+# Cobertura de testes / cache
+coverage
+.cache
+.eslintcache
+.vite
 
 # Editor
 .vscode/*

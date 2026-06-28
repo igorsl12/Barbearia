@@ -27,7 +27,7 @@ export function TimeSlotGrid({ slots, confirmed, serviceDuration, selected, onSe
 
   if (slots.length === 0) {
     return (
-      <p className="text-center text-sm text-gray-400 py-8">
+      <p className="text-center text-sm text-ink-400 py-8">
         Nenhum horário disponível para esta data.
       </p>
     )
@@ -45,12 +45,12 @@ export function TimeSlotGrid({ slots, confirmed, serviceDuration, selected, onSe
             disabled={unavailable}
             onClick={() => onSelect(slot)}
             className={cn(
-              'h-11 rounded-lg border text-sm font-medium transition-all',
+              'h-11 rounded-xl border text-sm font-semibold transition-all duration-200',
               isSelected
-                ? 'bg-black text-white border-black'
+                ? 'bg-ink-900 text-cream border-ink-900 shadow-soft'
                 : unavailable
-                ? 'bg-gray-50 text-gray-300 border-gray-100 cursor-not-allowed line-through'
-                : 'bg-white text-gray-700 border-gray-200 hover:border-gray-400',
+                ? 'bg-ink-50 text-ink-300 border-ink-100 cursor-not-allowed line-through'
+                : 'bg-white text-ink-700 border-ink-200 hover:border-brand-400 hover:text-brand-700',
             )}
           >
             {format(parseISO(slot), 'HH:mm')}
