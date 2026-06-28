@@ -87,34 +87,35 @@ export function Login() {
   }
 
   return (
-    <div className="min-h-screen bg-[#F9FAFB] flex items-center justify-center p-4">
-      <div className="w-full max-w-sm">
+    <div className="min-h-screen flex items-center justify-center p-4">
+      <div className="w-full max-w-sm animate-fade-up">
         {/* Logo / Brand */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-black rounded-2xl mb-3 overflow-hidden">
+          <div className="inline-flex items-center justify-center w-20 h-20 bg-ink-900 rounded-3xl mb-4 overflow-hidden shadow-card ring-1 ring-brand-400/30">
             {config?.logo_url ? (
               <img src={config.logo_url} alt="Logo" className="w-full h-full object-cover" />
             ) : (
-              <span className="text-white text-2xl">✂</span>
+              <span className="text-brand-400 text-3xl">✂</span>
             )}
           </div>
-          <h1 className="text-2xl font-bold text-gray-900">
+          <h1 className="brand-wordmark text-3xl text-ink-900">
             {config?.business_name ?? 'Barbearia'}
           </h1>
-          <p className="text-sm text-gray-500 mt-1">Agendamento online</p>
+          <div className="mx-auto mt-2 h-1 w-16 rounded-full barber-stripe" />
+          <p className="text-sm text-ink-500 mt-3">Seu horário, do seu jeito.</p>
         </div>
 
-        <Card className="overflow-hidden">
+        <Card className="overflow-hidden shadow-card">
           {/* Tabs */}
-          <div className="flex border-b border-gray-100">
+          <div className="flex border-b border-ink-100">
             {(['login', 'register'] as Tab[]).map(t => (
               <button
                 key={t}
                 onClick={() => { setTab(t); setErrors({}) }}
-                className={`flex-1 py-3 text-sm font-medium transition-colors ${
+                className={`flex-1 py-3.5 text-sm font-semibold transition-colors ${
                   tab === t
-                    ? 'text-black border-b-2 border-black -mb-px bg-white'
-                    : 'text-gray-400 hover:text-gray-600'
+                    ? 'text-ink-900 border-b-2 border-brand-400 -mb-px'
+                    : 'text-ink-400 hover:text-ink-600'
                 }`}
               >
                 {t === 'login' ? 'Entrar' : 'Criar conta'}
@@ -151,11 +152,11 @@ export function Login() {
                   autoComplete="current-password"
                 />
                 <div className="text-right">
-                  <Link to="/forgot-password" className="text-xs text-gray-500 hover:text-black underline-offset-2 hover:underline">
+                  <Link to="/forgot-password" className="text-xs text-ink-500 hover:text-brand-600 underline-offset-2 hover:underline">
                     Esqueceu a senha?
                   </Link>
                 </div>
-                <Button type="submit" loading={loading} className="w-full">
+                <Button type="submit" variant="accent" loading={loading} className="w-full">
                   Entrar
                 </Button>
               </form>
@@ -203,7 +204,7 @@ export function Login() {
                   error={errors.regConfirm}
                   icon={<Lock size={16} />}
                 />
-                <Button type="submit" loading={loading} className="w-full">
+                <Button type="submit" variant="accent" loading={loading} className="w-full">
                   Criar conta
                 </Button>
               </form>
@@ -211,10 +212,10 @@ export function Login() {
 
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-100" />
+                <div className="w-full border-t border-ink-100" />
               </div>
               <div className="relative flex justify-center">
-                <span className="bg-white px-3 text-xs text-gray-400">ou</span>
+                <span className="bg-white px-3 text-xs text-ink-400">ou</span>
               </div>
             </div>
 

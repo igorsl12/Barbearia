@@ -28,21 +28,21 @@ export function HorizontalCalendar({ selected, onSelect, daysAhead = 30, working
             className={cn(
               'flex-shrink-0 flex flex-col items-center justify-center w-14 h-16 rounded-xl border transition-all',
               disabled
-                ? 'bg-gray-50 border-gray-100 text-gray-300 cursor-not-allowed'
+                ? 'bg-ink-50 border-ink-100 text-ink-300 cursor-not-allowed'
                 : isSelected
-                  ? 'bg-black text-white border-black'
-                  : 'bg-white border-gray-200 text-gray-700 hover:border-gray-400',
+                  ? 'bg-ink-900 text-white border-ink-900'
+                  : 'bg-white border-ink-200 text-ink-700 hover:border-ink-400',
             )}
           >
             <span className={cn(
               'text-xs font-medium uppercase',
-              disabled ? 'text-gray-300' : isSelected ? 'text-white/70' : 'text-gray-400'
+              disabled ? 'text-ink-300' : isSelected ? 'text-white/70' : 'text-ink-400'
             )}>
               {format(day, 'EEE', { locale: ptBR })}
             </span>
             <span className="text-lg font-bold leading-tight">{format(day, 'd')}</span>
             {todayDay && !isSelected && !disabled && (
-              <span className="w-1 h-1 rounded-full bg-black mt-0.5" />
+              <span className="w-1 h-1 rounded-full bg-ink-900 mt-0.5" />
             )}
           </button>
         )

@@ -138,13 +138,13 @@ export function AdminSettings() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white border-b border-gray-100 sticky top-0 z-10">
+    <div className="min-h-screen bg-cream">
+      <header className="bg-white border-b border-ink-100 sticky top-0 z-10">
         <div className="max-w-lg mx-auto px-4 h-14 flex items-center gap-3">
-          <Link to="/admin" className="p-1.5 hover:bg-gray-100 rounded-lg">
+          <Link to="/admin" className="p-1.5 hover:bg-ink-100 rounded-lg">
             <ArrowLeft size={20} />
           </Link>
-          <span className="font-semibold text-gray-900">Configurações</span>
+          <span className="font-semibold text-ink-900">Configurações</span>
         </div>
       </header>
 
@@ -152,13 +152,13 @@ export function AdminSettings() {
 
         {/* Schedule */}
         <section>
-          <h2 className="text-base font-semibold text-gray-900 mb-3">Agenda de atendimento</h2>
+          <h2 className="text-base font-semibold text-ink-900 mb-3">Agenda de atendimento</h2>
           <Card className="p-4">
             <form onSubmit={handleSaveConfig} className="space-y-5">
 
               {/* Working days */}
               <div>
-                <p className="text-sm font-medium text-gray-700 mb-3">Dias de atendimento</p>
+                <p className="text-sm font-medium text-ink-700 mb-3">Dias de atendimento</p>
                 <div className="flex gap-2 flex-wrap">
                   {WEEK_DAYS.map(day => {
                     const active = workingDays.includes(day.value)
@@ -169,14 +169,14 @@ export function AdminSettings() {
                         onClick={() => toggleDay(day.value)}
                         className={`flex flex-col items-center justify-center w-12 h-14 rounded-xl border-2 transition-all select-none ${
                           active
-                            ? 'bg-black border-black text-white'
-                            : 'bg-white border-gray-200 text-gray-500 hover:border-gray-400'
+                            ? 'bg-ink-900 border-ink-900 text-white'
+                            : 'bg-white border-ink-200 text-ink-500 hover:border-ink-400'
                         }`}
                       >
-                        <span className={`text-xs font-semibold ${active ? 'text-white/70' : 'text-gray-400'}`}>
+                        <span className={`text-xs font-semibold ${active ? 'text-white/70' : 'text-ink-400'}`}>
                           {day.short.slice(0, 3)}
                         </span>
-                        <span className={`text-sm font-bold leading-tight ${active ? 'text-white' : 'text-gray-700'}`}>
+                        <span className={`text-sm font-bold leading-tight ${active ? 'text-white' : 'text-ink-700'}`}>
                           {day.short}
                         </span>
                       </button>
@@ -184,7 +184,7 @@ export function AdminSettings() {
                   })}
                 </div>
                 {workingDays.length > 0 && (
-                  <p className="text-xs text-gray-400 mt-2">
+                  <p className="text-xs text-ink-400 mt-2">
                     {workingDays.length} dia{workingDays.length !== 1 ? 's' : ''} selecionado{workingDays.length !== 1 ? 's' : ''}
                   </p>
                 )}
@@ -196,39 +196,39 @@ export function AdminSettings() {
                 const invalid = hours.open >= hours.close
                 return (
                   <div>
-                    <p className="text-sm font-medium text-gray-700 mb-3">Horário por dia</p>
+                    <p className="text-sm font-medium text-ink-700 mb-3">Horário por dia</p>
                     <div className="flex gap-3">
                       <div className="flex-1">
-                        <p className="text-xs text-gray-400 font-medium uppercase tracking-wide mb-1.5">Dia</p>
+                        <p className="text-xs text-ink-400 font-medium uppercase tracking-wide mb-1.5">Dia</p>
                         <div className="relative">
                           <select
                             value={selectedDay}
                             onChange={e => setSelectedDay(Number(e.target.value))}
-                            className="w-full appearance-none bg-white border border-gray-200 rounded-xl px-3 py-2.5 text-sm text-gray-700 focus:outline-none focus:ring-1 focus:ring-black cursor-pointer pr-8"
+                            className="w-full appearance-none bg-white border border-ink-200 rounded-xl px-3 py-2.5 text-sm text-ink-700 focus:outline-none focus:ring-1 focus:ring-ink-900 cursor-pointer pr-8"
                           >
                             {WEEK_DAYS.filter(d => workingDays.includes(d.value)).map(d => (
                               <option key={d.value} value={d.value}>{d.long}</option>
                             ))}
                           </select>
-                          <ChevronDown size={14} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+                          <ChevronDown size={14} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-ink-400 pointer-events-none" />
                         </div>
                       </div>
                       <div className="flex-1">
-                        <p className="text-xs text-gray-400 font-medium uppercase tracking-wide mb-1.5">Horário</p>
+                        <p className="text-xs text-ink-400 font-medium uppercase tracking-wide mb-1.5">Horário</p>
                         <div className="flex items-center gap-2">
                           <input
                             type="time"
                             value={hours.open}
                             onChange={e => setHour(selectedDay, 'open', e.target.value)}
-                            className="flex-1 bg-white border border-gray-200 rounded-xl px-3 py-2.5 text-sm text-gray-700 focus:outline-none focus:ring-1 focus:ring-black"
+                            className="flex-1 bg-white border border-ink-200 rounded-xl px-3 py-2.5 text-sm text-ink-700 focus:outline-none focus:ring-1 focus:ring-ink-900"
                           />
-                          <span className="text-xs text-gray-400 flex-shrink-0">às</span>
+                          <span className="text-xs text-ink-400 flex-shrink-0">às</span>
                           <input
                             type="time"
                             value={hours.close}
                             onChange={e => setHour(selectedDay, 'close', e.target.value)}
-                            className={`flex-1 bg-white border rounded-xl px-3 py-2.5 text-sm text-gray-700 focus:outline-none focus:ring-1 focus:ring-black ${
-                              invalid ? 'border-red-300 bg-red-50' : 'border-gray-200'
+                            className={`flex-1 bg-white border rounded-xl px-3 py-2.5 text-sm text-ink-700 focus:outline-none focus:ring-1 focus:ring-ink-900 ${
+                              invalid ? 'border-red-300 bg-red-50' : 'border-ink-200'
                             }`}
                           />
                         </div>
@@ -240,7 +240,7 @@ export function AdminSettings() {
 
               {/* Slot interval */}
               <div>
-                <p className="text-sm font-medium text-gray-700 mb-3">Intervalo entre horários</p>
+                <p className="text-sm font-medium text-ink-700 mb-3">Intervalo entre horários</p>
                 <div className="flex gap-2">
                   {[15, 20, 30, 45, 60].map(min => (
                     <button
@@ -249,8 +249,8 @@ export function AdminSettings() {
                       onClick={() => setSlotInterval(min)}
                       className={`flex-1 py-2 rounded-xl border-2 text-sm font-medium transition-all ${
                         slotInterval === min
-                          ? 'bg-black border-black text-white'
-                          : 'bg-white border-gray-200 text-gray-600 hover:border-gray-400'
+                          ? 'bg-ink-900 border-ink-900 text-white'
+                          : 'bg-white border-ink-200 text-ink-600 hover:border-ink-400'
                       }`}
                     >
                       {min}min
@@ -263,13 +263,13 @@ export function AdminSettings() {
               <div className="space-y-3">
                 <div className="flex items-center justify-between py-1">
                   <div>
-                    <p className="text-sm font-medium text-gray-700">Pausa para almoço</p>
-                    <p className="text-xs text-gray-400">Bloqueia horários durante a pausa</p>
+                    <p className="text-sm font-medium text-ink-700">Pausa para almoço</p>
+                    <p className="text-xs text-ink-400">Bloqueia horários durante a pausa</p>
                   </div>
                   <button
                     type="button"
                     onClick={() => setLunchEnabled(v => !v)}
-                    className={`relative w-11 h-6 rounded-full transition-colors ${lunchEnabled ? 'bg-black' : 'bg-gray-200'}`}
+                    className={`relative w-11 h-6 rounded-full transition-colors ${lunchEnabled ? 'bg-ink-900' : 'bg-ink-200'}`}
                   >
                     <span className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform ${lunchEnabled ? 'translate-x-5' : 'translate-x-0'}`} />
                   </button>
@@ -280,15 +280,15 @@ export function AdminSettings() {
                       type="time"
                       value={lunchStart}
                       onChange={e => setLunchStart(e.target.value)}
-                      className="flex-1 bg-white border border-gray-200 rounded-xl px-3 py-2.5 text-sm text-gray-700 focus:outline-none focus:ring-1 focus:ring-black"
+                      className="flex-1 bg-white border border-ink-200 rounded-xl px-3 py-2.5 text-sm text-ink-700 focus:outline-none focus:ring-1 focus:ring-ink-900"
                     />
-                    <span className="text-xs text-gray-400 flex-shrink-0">às</span>
+                    <span className="text-xs text-ink-400 flex-shrink-0">às</span>
                     <input
                       type="time"
                       value={lunchEnd}
                       onChange={e => setLunchEnd(e.target.value)}
-                      className={`flex-1 bg-white border rounded-xl px-3 py-2.5 text-sm text-gray-700 focus:outline-none focus:ring-1 focus:ring-black ${
-                        lunchEnd <= lunchStart ? 'border-red-300 bg-red-50' : 'border-gray-200'
+                      className={`flex-1 bg-white border rounded-xl px-3 py-2.5 text-sm text-ink-700 focus:outline-none focus:ring-1 focus:ring-ink-900 ${
+                        lunchEnd <= lunchStart ? 'border-red-300 bg-red-50' : 'border-ink-200'
                       }`}
                     />
                   </div>
@@ -298,13 +298,13 @@ export function AdminSettings() {
               {/* Auto-confirm */}
               <div className="flex items-center justify-between py-1">
                 <div>
-                  <p className="text-sm font-medium text-gray-700">Confirmar automaticamente</p>
-                  <p className="text-xs text-gray-400">Agendamentos são confirmados sem revisão</p>
+                  <p className="text-sm font-medium text-ink-700">Confirmar automaticamente</p>
+                  <p className="text-xs text-ink-400">Agendamentos são confirmados sem revisão</p>
                 </div>
                 <button
                   type="button"
                   onClick={() => setAutoConfirm(v => !v)}
-                  className={`relative w-11 h-6 rounded-full transition-colors ${autoConfirm ? 'bg-black' : 'bg-gray-200'}`}
+                  className={`relative w-11 h-6 rounded-full transition-colors ${autoConfirm ? 'bg-ink-900' : 'bg-ink-200'}`}
                 >
                   <span className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform ${autoConfirm ? 'translate-x-5' : 'translate-x-0'}`} />
                 </button>
@@ -319,10 +319,10 @@ export function AdminSettings() {
 
         {/* Services */}
         <section>
-          <h2 className="text-base font-semibold text-gray-900 mb-3">Serviços</h2>
+          <h2 className="text-base font-semibold text-ink-900 mb-3">Serviços</h2>
 
           <Card className="p-4 mb-3">
-            <h3 className="text-sm font-medium text-gray-700 mb-3">
+            <h3 className="text-sm font-medium text-ink-700 mb-3">
               {editingService ? 'Editar serviço' : 'Adicionar serviço'}
             </h3>
             <ServiceForm
@@ -334,7 +334,7 @@ export function AdminSettings() {
 
           {svLoading ? (
             <div className="space-y-2">
-              {[1, 2, 3].map(i => <div key={i} className="h-14 bg-gray-100 animate-pulse rounded-xl" />)}
+              {[1, 2, 3].map(i => <div key={i} className="h-14 bg-ink-100 animate-pulse rounded-xl" />)}
             </div>
           ) : (
             <div className="space-y-2">
@@ -342,17 +342,17 @@ export function AdminSettings() {
                 <Card key={s.id} className={`p-4 ${!s.active ? 'opacity-50' : ''}`}>
                   <div className="flex items-center justify-between gap-2">
                     <div>
-                      <p className="font-medium text-gray-900">{s.name}</p>
-                      <p className="text-xs text-gray-500">{s.duration}min · {formatCurrency(s.price)}</p>
+                      <p className="font-medium text-ink-900">{s.name}</p>
+                      <p className="text-xs text-ink-500">{s.duration}min · {formatCurrency(s.price)}</p>
                     </div>
                     <div className="flex items-center gap-1">
                       {confirmDeleteId === s.id ? (
                         <div className="flex items-center gap-2">
-                          <span className="text-xs text-gray-500">Excluir?</span>
+                          <span className="text-xs text-ink-500">Excluir?</span>
                           <button onClick={() => handleDelete(s.id)} className="text-xs font-semibold text-red-500 hover:text-red-700">
                             Sim
                           </button>
-                          <button onClick={() => setConfirmDeleteId(null)} className="text-xs text-gray-400 hover:text-gray-600">
+                          <button onClick={() => setConfirmDeleteId(null)} className="text-xs text-ink-400 hover:text-ink-600">
                             Não
                           </button>
                         </div>
@@ -360,20 +360,20 @@ export function AdminSettings() {
                         <>
                           <button
                             onClick={() => setEditingService(s)}
-                            className="text-xs text-gray-500 hover:text-black px-2 py-1 rounded hover:bg-gray-100"
+                            className="text-xs text-ink-500 hover:text-ink-900 px-2 py-1 rounded hover:bg-ink-100"
                           >
                             Editar
                           </button>
                           <button
                             onClick={() => handleToggle(s.id, s.active)}
-                            className={`p-1.5 rounded-lg transition-colors ${s.active ? 'text-green-600 hover:bg-green-50' : 'text-gray-400 hover:bg-gray-100'}`}
+                            className={`p-1.5 rounded-lg transition-colors ${s.active ? 'text-emerald-600 hover:bg-emerald-50' : 'text-ink-400 hover:bg-ink-100'}`}
                             title={s.active ? 'Desativar' : 'Ativar'}
                           >
                             <Power size={16} />
                           </button>
                           <button
                             onClick={() => setConfirmDeleteId(s.id)}
-                            className="p-1.5 rounded-lg text-gray-400 hover:text-red-500 hover:bg-red-50 transition-colors"
+                            className="p-1.5 rounded-lg text-ink-400 hover:text-red-500 hover:bg-red-50 transition-colors"
                             title="Excluir"
                           >
                             <Trash2 size={16} />

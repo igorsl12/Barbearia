@@ -62,13 +62,13 @@ export function ClientProfile() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white border-b border-gray-100 sticky top-0 z-10">
+    <div className="min-h-screen bg-cream">
+      <header className="bg-white border-b border-ink-100 sticky top-0 z-10">
         <div className="max-w-lg mx-auto px-4 h-14 flex items-center gap-3">
-          <Link to="/dashboard" className="p-1.5 hover:bg-gray-100 rounded-lg">
+          <Link to="/dashboard" className="p-1.5 hover:bg-ink-100 rounded-lg">
             <ArrowLeft size={20} />
           </Link>
-          <span className="font-semibold text-gray-900">Meu perfil</span>
+          <span className="font-semibold text-ink-900">Meu perfil</span>
         </div>
       </header>
 
@@ -81,23 +81,23 @@ export function ClientProfile() {
             disabled={uploading}
             className="relative group"
           >
-            <div className="w-24 h-24 rounded-full bg-gray-100 border-2 border-gray-200 overflow-hidden flex items-center justify-center">
+            <div className="w-24 h-24 rounded-full bg-ink-100 border-2 border-ink-200 overflow-hidden flex items-center justify-center">
               {avatarUrl ? (
                 <img src={avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
               ) : (
-                <User size={36} className="text-gray-400" />
+                <User size={36} className="text-ink-400" />
               )}
             </div>
-            <div className="absolute inset-0 rounded-full bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+            <div className="absolute inset-0 rounded-full bg-ink-900/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
               <Camera size={20} className="text-white" />
             </div>
             {uploading && (
-              <div className="absolute inset-0 rounded-full bg-black/50 flex items-center justify-center">
+              <div className="absolute inset-0 rounded-full bg-ink-900/50 flex items-center justify-center">
                 <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
               </div>
             )}
           </button>
-          <p className="text-xs text-gray-400">Toque para alterar a foto · máx. 2MB</p>
+          <p className="text-xs text-ink-400">Toque para alterar a foto · máx. 2MB</p>
           <input
             ref={fileRef}
             type="file"
@@ -111,7 +111,7 @@ export function ClientProfile() {
         <Card className="p-5">
           <form onSubmit={handleSave} className="space-y-4">
             <div>
-              <label className="text-xs text-gray-500 font-medium uppercase tracking-wide mb-1.5 block">
+              <label className="text-xs text-ink-500 font-medium uppercase tracking-wide mb-1.5 block">
                 Nome completo
               </label>
               <input
@@ -119,25 +119,25 @@ export function ClientProfile() {
                 value={fullName}
                 onChange={e => setFullName(e.target.value)}
                 placeholder="Seu nome"
-                className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm text-gray-700 focus:outline-none focus:ring-1 focus:ring-black"
+                className="w-full border border-ink-200 rounded-xl px-3 py-2.5 text-sm text-ink-700 focus:outline-none focus:ring-1 focus:ring-ink-900"
               />
             </div>
 
             <div>
-              <label className="text-xs text-gray-500 font-medium uppercase tracking-wide mb-1.5 block">
+              <label className="text-xs text-ink-500 font-medium uppercase tracking-wide mb-1.5 block">
                 E-mail
               </label>
               <input
                 type="email"
                 value={profile?.email ?? ''}
                 disabled
-                className="w-full border border-gray-100 rounded-xl px-3 py-2.5 text-sm text-gray-400 bg-gray-50 cursor-not-allowed"
+                className="w-full border border-ink-100 rounded-xl px-3 py-2.5 text-sm text-ink-400 bg-ink-50 cursor-not-allowed"
               />
-              <p className="text-xs text-gray-400 mt-1">O e-mail não pode ser alterado.</p>
+              <p className="text-xs text-ink-400 mt-1">O e-mail não pode ser alterado.</p>
             </div>
 
             <div>
-              <label className="text-xs text-gray-500 font-medium uppercase tracking-wide mb-1.5 block">
+              <label className="text-xs text-ink-500 font-medium uppercase tracking-wide mb-1.5 block">
                 Telefone
               </label>
               <input
@@ -145,7 +145,7 @@ export function ClientProfile() {
                 value={phone}
                 onChange={e => setPhone(e.target.value)}
                 placeholder="(11) 99999-9999"
-                className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm text-gray-700 focus:outline-none focus:ring-1 focus:ring-black"
+                className="w-full border border-ink-200 rounded-xl px-3 py-2.5 text-sm text-ink-700 focus:outline-none focus:ring-1 focus:ring-ink-900"
               />
             </div>
 

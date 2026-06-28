@@ -29,33 +29,33 @@ export function CalendarPicker({ selected, onSelect, workingDays }: CalendarPick
   const isPrevDisabled = isSameMonth(currentMonth, today)
 
   return (
-    <div className="bg-white border border-gray-100 rounded-2xl p-4 select-none">
+    <div className="bg-white border border-ink-100 rounded-2xl p-4 select-none shadow-soft">
       {/* Month navigation */}
       <div className="flex items-center justify-between mb-4">
         <button
           type="button"
           onClick={() => setCurrentMonth(m => subMonths(m, 1))}
           disabled={isPrevDisabled}
-          className="p-1.5 rounded-lg hover:bg-gray-100 disabled:opacity-25 disabled:cursor-not-allowed transition-opacity"
+          className="p-1.5 rounded-lg hover:bg-ink-100 disabled:opacity-25 disabled:cursor-not-allowed transition-opacity"
         >
-          <ChevronLeft size={18} className="text-gray-700" />
+          <ChevronLeft size={18} className="text-ink-700" />
         </button>
-        <span className="font-semibold text-gray-900 capitalize text-sm">
+        <span className="font-display font-semibold text-ink-900 capitalize">
           {format(currentMonth, 'MMMM yyyy', { locale: ptBR })}
         </span>
         <button
           type="button"
           onClick={() => setCurrentMonth(m => addMonths(m, 1))}
-          className="p-1.5 rounded-lg hover:bg-gray-100 transition-colors"
+          className="p-1.5 rounded-lg hover:bg-ink-100 transition-colors"
         >
-          <ChevronRight size={18} className="text-gray-700" />
+          <ChevronRight size={18} className="text-ink-700" />
         </button>
       </div>
 
       {/* Day of week headers */}
       <div className="grid grid-cols-7 mb-1">
         {DAY_NAMES.map(d => (
-          <div key={d} className="text-center text-xs font-medium text-gray-400 py-1.5">
+          <div key={d} className="text-center text-xs font-medium text-ink-400 py-1.5">
             {d}
           </div>
         ))}
@@ -80,10 +80,10 @@ export function CalendarPicker({ selected, onSelect, workingDays }: CalendarPick
               className={cn(
                 'relative mx-auto flex items-center justify-center h-9 w-9 rounded-xl text-sm font-medium transition-all',
                 !inMonth && 'invisible pointer-events-none',
-                inMonth && disabled && 'text-gray-300 cursor-not-allowed',
-                inMonth && !disabled && !isSelected && 'text-gray-700 hover:bg-gray-100',
-                isSelected && 'bg-black text-white shadow-sm',
-                isTodayDay && !isSelected && !disabled && 'text-black font-bold ring-1 ring-black ring-offset-1',
+                inMonth && disabled && 'text-ink-300 cursor-not-allowed',
+                inMonth && !disabled && !isSelected && 'text-ink-700 hover:bg-ink-100',
+                isSelected && 'bg-ink-900 text-cream shadow-soft',
+                isTodayDay && !isSelected && !disabled && 'text-brand-700 font-bold ring-1 ring-brand-400 ring-offset-1',
               )}
             >
               {format(day, 'd')}

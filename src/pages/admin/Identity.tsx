@@ -106,13 +106,13 @@ export function AdminIdentity() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white border-b border-gray-100 sticky top-0 z-10">
+    <div className="min-h-screen bg-cream">
+      <header className="bg-white border-b border-ink-100 sticky top-0 z-10">
         <div className="max-w-lg mx-auto px-4 h-14 flex items-center gap-3">
-          <Link to="/admin" className="p-1.5 hover:bg-gray-100 rounded-lg">
+          <Link to="/admin" className="p-1.5 hover:bg-ink-100 rounded-lg">
             <ArrowLeft size={20} />
           </Link>
-          <span className="font-semibold text-gray-900">Identidade</span>
+          <span className="font-semibold text-ink-900">Identidade</span>
         </div>
       </header>
 
@@ -122,7 +122,7 @@ export function AdminIdentity() {
 
             {/* Logo */}
             <div>
-              <p className="text-xs text-gray-500 font-medium uppercase tracking-wide mb-3">Logo</p>
+              <p className="text-xs text-ink-500 font-medium uppercase tracking-wide mb-3">Logo</p>
               <div className="flex items-center gap-4">
                 <button
                   type="button"
@@ -130,20 +130,20 @@ export function AdminIdentity() {
                   disabled={uploadingLogo || deletingLogo}
                   className="relative group flex-shrink-0"
                 >
-                  <div className="w-20 h-20 rounded-2xl bg-gray-100 border-2 border-dashed border-gray-300 overflow-hidden flex items-center justify-center">
+                  <div className="w-20 h-20 rounded-2xl bg-ink-100 border-2 border-dashed border-ink-300 overflow-hidden flex items-center justify-center">
                     {logoUrl ? (
                       <img src={logoUrl} alt="Logo" className="w-full h-full object-cover" />
                     ) : (
-                      <Store size={28} className="text-gray-400" />
+                      <Store size={28} className="text-ink-400" />
                     )}
                   </div>
                   {!logoUrl && (
-                    <div className="absolute inset-0 rounded-2xl bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                    <div className="absolute inset-0 rounded-2xl bg-ink-900/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                       <Camera size={18} className="text-white" />
                     </div>
                   )}
                   {uploadingLogo && (
-                    <div className="absolute inset-0 rounded-2xl bg-black/50 flex items-center justify-center">
+                    <div className="absolute inset-0 rounded-2xl bg-ink-900/50 flex items-center justify-center">
                       <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
                     </div>
                   )}
@@ -154,7 +154,7 @@ export function AdminIdentity() {
                     type="button"
                     onClick={() => logoRef.current?.click()}
                     disabled={uploadingLogo || deletingLogo}
-                    className="text-sm font-medium text-gray-700 hover:text-black px-3 py-1.5 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50"
+                    className="text-sm font-medium text-ink-700 hover:text-ink-900 px-3 py-1.5 border border-ink-200 rounded-lg hover:bg-ink-50 transition-colors disabled:opacity-50"
                   >
                     {logoUrl ? 'Trocar logo' : 'Enviar logo'}
                   </button>
@@ -172,17 +172,17 @@ export function AdminIdentity() {
                       Remover logo
                     </button>
                   )}
-                  <p className="text-xs text-gray-400">JPG, PNG ou WebP · máx. 2MB</p>
+                  <p className="text-xs text-ink-400">JPG, PNG ou WebP · máx. 2MB</p>
                 </div>
               </div>
               <input ref={logoRef} type="file" accept="image/jpeg,image/png,image/webp" className="hidden" onChange={handleLogoChange} />
             </div>
 
-            <div className="border-t border-gray-100" />
+            <div className="border-t border-ink-100" />
 
             {/* Business name */}
             <div>
-              <label className="text-xs text-gray-500 font-medium uppercase tracking-wide mb-1.5 block">
+              <label className="text-xs text-ink-500 font-medium uppercase tracking-wide mb-1.5 block">
                 Nome da barbearia
               </label>
               <input
@@ -190,13 +190,13 @@ export function AdminIdentity() {
                 value={businessName}
                 onChange={e => setBusinessName(e.target.value)}
                 placeholder="Ex: Barbearia do João"
-                className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm text-gray-700 focus:outline-none focus:ring-1 focus:ring-black"
+                className="w-full border border-ink-200 rounded-xl px-3 py-2.5 text-sm text-ink-700 focus:outline-none focus:ring-1 focus:ring-ink-900"
               />
             </div>
 
             {/* Address */}
             <div className="space-y-2">
-              <label className="text-xs text-gray-500 font-medium uppercase tracking-wide block">
+              <label className="text-xs text-ink-500 font-medium uppercase tracking-wide block">
                 Endereço
               </label>
               <input
@@ -204,7 +204,7 @@ export function AdminIdentity() {
                 value={address}
                 onChange={e => setAddress(e.target.value)}
                 placeholder="Rua / Avenida"
-                className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm text-gray-700 focus:outline-none focus:ring-1 focus:ring-black"
+                className="w-full border border-ink-200 rounded-xl px-3 py-2.5 text-sm text-ink-700 focus:outline-none focus:ring-1 focus:ring-ink-900"
               />
               <div className="grid grid-cols-3 gap-2">
                 <input
@@ -212,14 +212,14 @@ export function AdminIdentity() {
                   value={addressNumber}
                   onChange={e => setAddressNumber(e.target.value)}
                   placeholder="Número"
-                  className="border border-gray-200 rounded-xl px-3 py-2.5 text-sm text-gray-700 focus:outline-none focus:ring-1 focus:ring-black"
+                  className="border border-ink-200 rounded-xl px-3 py-2.5 text-sm text-ink-700 focus:outline-none focus:ring-1 focus:ring-ink-900"
                 />
                 <input
                   type="text"
                   value={addressCity}
                   onChange={e => setAddressCity(e.target.value)}
                   placeholder="Cidade"
-                  className="border border-gray-200 rounded-xl px-3 py-2.5 text-sm text-gray-700 focus:outline-none focus:ring-1 focus:ring-black"
+                  className="border border-ink-200 rounded-xl px-3 py-2.5 text-sm text-ink-700 focus:outline-none focus:ring-1 focus:ring-ink-900"
                 />
                 <input
                   type="text"
@@ -227,7 +227,7 @@ export function AdminIdentity() {
                   onChange={e => setAddressState(e.target.value.toUpperCase().slice(0, 2))}
                   placeholder="UF"
                   maxLength={2}
-                  className="border border-gray-200 rounded-xl px-3 py-2.5 text-sm text-gray-700 focus:outline-none focus:ring-1 focus:ring-black uppercase"
+                  className="border border-ink-200 rounded-xl px-3 py-2.5 text-sm text-ink-700 focus:outline-none focus:ring-1 focus:ring-ink-900 uppercase"
                 />
               </div>
             </div>
@@ -235,22 +235,22 @@ export function AdminIdentity() {
             {/* Social */}
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="text-xs text-gray-500 font-medium uppercase tracking-wide mb-1.5 block">
+                <label className="text-xs text-ink-500 font-medium uppercase tracking-wide mb-1.5 block">
                   Instagram
                 </label>
-                <div className="flex items-center border border-gray-200 rounded-xl overflow-hidden focus-within:ring-1 focus-within:ring-black">
-                  <span className="pl-3 text-sm text-gray-400 select-none">@</span>
+                <div className="flex items-center border border-ink-200 rounded-xl overflow-hidden focus-within:ring-1 focus-within:ring-ink-900">
+                  <span className="pl-3 text-sm text-ink-400 select-none">@</span>
                   <input
                     type="text"
                     value={instagram}
                     onChange={e => setInstagram(e.target.value.replace('@', ''))}
                     placeholder="handle"
-                    className="flex-1 px-2 py-2.5 text-sm text-gray-700 focus:outline-none"
+                    className="flex-1 px-2 py-2.5 text-sm text-ink-700 focus:outline-none"
                   />
                 </div>
               </div>
               <div>
-                <label className="text-xs text-gray-500 font-medium uppercase tracking-wide mb-1.5 block">
+                <label className="text-xs text-ink-500 font-medium uppercase tracking-wide mb-1.5 block">
                   WhatsApp
                 </label>
                 <input
@@ -258,7 +258,7 @@ export function AdminIdentity() {
                   value={whatsapp}
                   onChange={e => setWhatsapp(e.target.value)}
                   placeholder="5511999999999"
-                  className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm text-gray-700 focus:outline-none focus:ring-1 focus:ring-black"
+                  className="w-full border border-ink-200 rounded-xl px-3 py-2.5 text-sm text-ink-700 focus:outline-none focus:ring-1 focus:ring-ink-900"
                 />
               </div>
             </div>

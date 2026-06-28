@@ -54,4 +54,12 @@ export interface BusinessConfig {
   day_hours: Record<string, DayHours> // key = day number as string
 }
 
+export interface AppointmentStats {
+  revenueToday: number
+  appointmentsToday: number
+  pendingCount: number
+  revenueMonth: number
+  popularService: string
+}
+
 export type BookingStep = 'service' | 'date' | 'time' | 'confirm'

@@ -11,23 +11,24 @@ interface ServiceCardProps {
 
 export function ServiceCard({ service, selected, onClick }: ServiceCardProps) {
   return (
-    <button
-      onClick={onClick}
-      className={cn(
-        'w-full text-left transition-all',
-        selected && 'ring-2 ring-black rounded-xl',
-      )}
-    >
-      <Card className={cn('p-4', selected && 'border-black')}>
-        <div className="flex items-center justify-between">
-          <div>
-            <p className="font-semibold text-gray-900">{service.name}</p>
-            <div className="flex items-center gap-1 mt-1 text-gray-500">
+    <button onClick={onClick} className="w-full text-left">
+      <Card
+        className={cn(
+          'p-4 transition-all duration-200',
+          selected
+            ? 'border-brand-400 ring-2 ring-brand-400/50 shadow-glow'
+            : 'hover:border-ink-200 hover:shadow-card',
+        )}
+      >
+        <div className="flex items-center justify-between gap-3">
+          <div className="min-w-0">
+            <p className="font-semibold text-ink-900 truncate">{service.name}</p>
+            <div className="flex items-center gap-1 mt-1 text-ink-500">
               <Clock size={13} />
               <span className="text-xs">{formatDuration(service.duration)}</span>
             </div>
           </div>
-          <span className="text-base font-bold text-gray-900">
+          <span className="font-display text-lg font-bold text-ink-900 flex-shrink-0">
             {formatCurrency(service.price)}
           </span>
         </div>

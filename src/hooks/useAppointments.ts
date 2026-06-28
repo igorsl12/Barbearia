@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react'
-import { format } from 'date-fns'
+import { format, isSameDay, startOfMonth, endOfMonth } from 'date-fns'
 import { supabase } from '@/lib/supabase'
-import type { Appointment } from '@/types'
+import type { Appointment, AppointmentStats, Service } from '@/types'
 
 export function useAppointments() {
   const [appointments, setAppointments] = useState<Appointment[]>([])
@@ -68,6 +68,65 @@ export function useAppointments() {
     setLoading(false)
   }, [])
 
+  const loadStats = useCallback(async (): Promise<AppointmentStats> => {
+    const now = new Date()
+    const monthStart = startOfMonth(now)
+    const monthEnd = endOfMonth(now)
+
+    const { data } = await supabase
+      .from('appointments')
+      .select('date, status, services:service_id (name, duration, price)')
+      .gte('date', monthStart.toISOString())
+      .lte('date', monthEnd.toISOString())
+
+    type StatsRow = Pick<Appointment, 'date' | 'status'> & {
+      services: Pick<Service, 'name' | 'price'> | null
+    }
+    const rows = (data ?? []) as unknown as StatsRow[]
+
+    const empty: AppointmentStats = {
+      revenueToday: 0,
+      appointmentsToday: 0,
+      pendingCount: 0,
+      revenueMonth: 0,
+      popularService: '—',
+    }
+    if (rows.length === 0) return empty
+
+    const serviceCounts = new Map<string, number>()
+    let popularService = '—'
+
+    const stats = rows.reduce<AppointmentStats>((acc, row) => {
+      const date = new Date(row.date)
+      const today = isSameDay(date, now)
+      const price = row.services?.price ?? 0
+      const earns = row.status === 'completed' || row.status === 'confirmed'
+
+      if (earns) acc.revenueMonth += price
+      if (today && earns) acc.revenueToday += price
+      if (today && row.status !== 'cancelled') acc.appointmentsToday += 1
+      if (row.status === 'pending') acc.pendingCount += 1
+
+      if (row.status !== 'cancelled' && row.services?.name) {
+        const next = (serviceCounts.get(row.services.name) ?? 0) + 1
+        serviceCounts.set(row.services.name, next)
+      }
+
+      return acc
+    }, { ...empty, popularService: '—' })
+
+    let topCount = 0
+    serviceCounts.forEach((count, name) => {
+      if (count > topCount) {
+        topCount = count
+        popularService = name
+      }
+    })
+    stats.popularService = popularService
+
+    return stats
+  }, [])
+
   async function getConfirmedForDate(date: Date) {
     const dayStr = format(date, 'yyyy-MM-dd')
     const { data } = await supabase
@@ -126,5 +185,14 @@ export function useAppointments() {
     await loadMine()
   }
 
-  return { appointments, loading, loadMine, loadHistory, loadAllHistory, loadByDate, getConfirmedForDate, bookAppointment, updateStatus, cancelAppointment, clearHistory, clearAllHistory }
+  async function rescheduleAppointment(id: string, date: string, autoConfirm = false) {
+    const { error } = await supabase
+      .from('appointments')
+      .update({ date, status: autoConfirm ? 'confirmed' : 'pending' })
+      .eq('id', id)
+    if (error) throw error
+    await loadMine()
+  }
+
+  return { appointments, loading, loadMine, loadHistory, loadAllHistory, loadByDate, loadStats, getConfirmedForDate, bookAppointment, updateStatus, cancelAppointment, rescheduleAppointment, clearHistory, clearAllHistory }
 }

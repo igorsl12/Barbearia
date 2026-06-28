@@ -19,8 +19,8 @@ function PasswordRequirements({ password }: { password: string }) {
   return (
     <ul className="space-y-1 mt-1">
       {rules.map(r => (
-        <li key={r.label} className={`flex items-center gap-1.5 text-xs ${r.ok ? 'text-green-600' : 'text-gray-400'}`}>
-          <span className={`w-1.5 h-1.5 rounded-full ${r.ok ? 'bg-green-500' : 'bg-gray-300'}`} />
+        <li key={r.label} className={`flex items-center gap-1.5 text-xs ${r.ok ? 'text-emerald-600' : 'text-ink-400'}`}>
+          <span className={`w-1.5 h-1.5 rounded-full ${r.ok ? 'bg-emerald-500' : 'bg-ink-300'}`} />
           {r.label}
         </li>
       ))}
@@ -83,9 +83,9 @@ export function ForgotPassword() {
   }
 
   return (
-    <div className="min-h-screen bg-[#F9FAFB] flex items-center justify-center p-4">
+    <div className="min-h-screen bg-cream flex items-center justify-center p-4">
       <div className="w-full max-w-sm">
-        <Link to="/login" className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-black mb-6">
+        <Link to="/login" className="inline-flex items-center gap-1.5 text-sm text-ink-500 hover:text-ink-900 mb-6">
           <ArrowLeft size={16} /> Voltar ao login
         </Link>
 
@@ -93,8 +93,8 @@ export function ForgotPassword() {
           {step === 'email' && (
             <form onSubmit={handleSendOtp} className="space-y-4">
               <div>
-                <h2 className="text-xl font-bold text-gray-900">Recuperar senha</h2>
-                <p className="text-sm text-gray-500 mt-1">
+                <h2 className="text-xl font-bold text-ink-900">Recuperar senha</h2>
+                <p className="text-sm text-ink-500 mt-1">
                   Enviaremos um código de 6 dígitos para o seu e-mail.
                 </p>
               </div>
@@ -116,8 +116,8 @@ export function ForgotPassword() {
           {step === 'otp' && (
             <form onSubmit={handleVerifyOtp} className="space-y-6">
               <div>
-                <h2 className="text-xl font-bold text-gray-900">Digite o código</h2>
-                <p className="text-sm text-gray-500 mt-1">
+                <h2 className="text-xl font-bold text-ink-900">Digite o código</h2>
+                <p className="text-sm text-ink-500 mt-1">
                   Código enviado para <strong>{email}</strong>
                 </p>
               </div>
@@ -128,7 +128,7 @@ export function ForgotPassword() {
               <button
                 type="button"
                 onClick={() => { setOtp(''); handleSendOtp(new Event('') as unknown as React.FormEvent) }}
-                className="w-full text-xs text-gray-400 hover:text-black"
+                className="w-full text-xs text-ink-400 hover:text-ink-900"
               >
                 Não recebeu? Reenviar
               </button>
@@ -138,8 +138,8 @@ export function ForgotPassword() {
           {step === 'password' && (
             <form onSubmit={handleUpdatePassword} className="space-y-4">
               <div>
-                <h2 className="text-xl font-bold text-gray-900">Nova senha</h2>
-                <p className="text-sm text-gray-500 mt-1">Escolha uma senha segura.</p>
+                <h2 className="text-xl font-bold text-ink-900">Nova senha</h2>
+                <p className="text-sm text-ink-500 mt-1">Escolha uma senha segura.</p>
               </div>
               <div>
                 <Input
@@ -168,10 +168,10 @@ export function ForgotPassword() {
 
           {step === 'done' && (
             <div className="flex flex-col items-center gap-4 py-4">
-              <CheckCircle size={48} className="text-green-500" />
+              <CheckCircle size={48} className="text-emerald-500" />
               <div className="text-center">
-                <h2 className="text-xl font-bold text-gray-900">Senha atualizada!</h2>
-                <p className="text-sm text-gray-500 mt-1">Sua senha foi redefinida com sucesso.</p>
+                <h2 className="text-xl font-bold text-ink-900">Senha atualizada!</h2>
+                <p className="text-sm text-ink-500 mt-1">Sua senha foi redefinida com sucesso.</p>
               </div>
               <Button onClick={() => navigate('/login')} className="w-full">
                 Ir para o login

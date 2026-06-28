@@ -33,28 +33,28 @@ export function AppointmentCard({ appointment: appt, onConfirm, onReject, onComp
       <div className="flex items-start justify-between gap-2">
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-1.5 mb-1">
-            <Clock size={14} className="text-gray-400 flex-shrink-0" />
-            <span className="font-bold text-gray-900">{formatTime(appt.date)}</span>
+            <Clock size={14} className="text-ink-400 flex-shrink-0" />
+            <span className="font-bold text-ink-900">{formatTime(appt.date)}</span>
             <Badge variant={STATUS_VARIANT[appt.status]}>
               {STATUS_LABEL[appt.status]}
             </Badge>
           </div>
-          <div className="flex items-center gap-1.5 text-sm text-gray-700">
-            <User size={13} className="text-gray-400 flex-shrink-0" />
+          <div className="flex items-center gap-1.5 text-sm text-ink-700">
+            <User size={13} className="text-ink-400 flex-shrink-0" />
             <span className="truncate">{appt.profiles?.full_name ?? 'Cliente'}</span>
           </div>
-          <div className="flex items-center gap-1.5 text-sm text-gray-600 mt-0.5">
-            <Scissors size={13} className="text-gray-400 flex-shrink-0" />
+          <div className="flex items-center gap-1.5 text-sm text-ink-600 mt-0.5">
+            <Scissors size={13} className="text-ink-400 flex-shrink-0" />
             <span>{appt.services?.name ?? '—'}</span>
             {appt.services && (
-              <span className="text-gray-400">·&nbsp;{appt.services.duration}min&nbsp;·&nbsp;{formatCurrency(appt.services.price)}</span>
+              <span className="text-ink-400">·&nbsp;{appt.services.duration}min&nbsp;·&nbsp;{formatCurrency(appt.services.price)}</span>
             )}
           </div>
         </div>
       </div>
 
       {appt.status === 'pending' && (
-        <div className="flex gap-2 mt-3 pt-3 border-t border-gray-100">
+        <div className="flex gap-2 mt-3 pt-3 border-t border-ink-100">
           <Button variant="success" size="sm" className="flex-1" onClick={() => onConfirm(appt.id)}>
             Confirmar
           </Button>
@@ -65,7 +65,7 @@ export function AppointmentCard({ appointment: appt, onConfirm, onReject, onComp
       )}
 
       {appt.status === 'confirmed' && (
-        <div className="flex gap-2 mt-3 pt-3 border-t border-gray-100">
+        <div className="flex gap-2 mt-3 pt-3 border-t border-ink-100">
           <Button variant="ghost" size="sm" className="flex-1" onClick={() => onComplete(appt.id)}>
             Concluído
           </Button>
